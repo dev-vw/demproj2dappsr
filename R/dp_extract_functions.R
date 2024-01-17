@@ -3,6 +3,7 @@
 #' @importFrom utils read.csv
 #' @param fpath A file path string to the `.dp` input file
 #' @returns a data frame
+#' @export
 read_dp <- function(fpath) {
   df <- read.csv(fpath,
                  sep = ",",
@@ -14,7 +15,7 @@ read_dp <- function(fpath) {
 
 #' Given a tag, finds the first index marking the start of the tagged data
 #'
-#' @param dp A DemoProj data frame
+#' @param dp A DemProj data frame
 #' @param tag A tag string
 #' @param tagcol The column number of dp to search for the tag. Defaults to `1`.
 #' @returns an integer
@@ -24,7 +25,13 @@ dp_findstartindex <- function(dp, tag, tagcol = 1) {
   return(i_start)
 }
 
+#' #' Given a tag, finds the index marking the end of the tagged data
 #'
+#' @param dp A DemProj data frame
+#' @param tag A tag string
+#' @param tagcol The column number of dp to search for the tag. Defaults to `2`.
+#' @param offset_idx An integer indicating an offset of the returned index.
+#' @returns an integer
 dp_findendindex <- function(dp, tag, tagcol = 2, offset_idx = 0) {
   notna_indices <- which(!is.na(dp[, tagcol]))
   i_end <- notna_indices[which(notna_indices == which(dp[, tagcol] == tag)) + 1 + offset_idx] - 2
@@ -32,14 +39,24 @@ dp_findendindex <- function(dp, tag, tagcol = 2, offset_idx = 0) {
   return(i_end)
 }
 
+#' #' Given a tag, finds the index marking the position of the input tag
+#'
+#' @param dp A DemProj data frame
+#' @param tag A tag string
+#' @param tagcol The column number of dp to search for the tag. Defaults to `2`.
+#' @returns an integer
 dp_findindex <- function(dp, tag, tagcol = 2) {
   i <- which(dp[, tagcol] == tag)
 
   return(i)
 }
 
-# given keyword (kw) for a taglist (or similar column), what is the
-# index of the first instance encountered for that kw?
+#' Given keyword (kw) for a taglist (or similar column), finds is next
+#' index after the first instance for the input kw.
+#'
+#' @param vec A vector of kw
+#' @param kw A kw string
+#' @returns An integer
 vec_findnextindex <- function(vec, kw) {
   i <- which(vec == kw)[1]
 
