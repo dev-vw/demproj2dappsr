@@ -7,6 +7,7 @@
 #' male and female life tables by age. Years correspond to the mid-year. The "summary_measures" key contains a set of summary tables about the vital events of the
 #' projection. The "age_summary" key contains a set of summary data by age group and by year. The "warnings" and "error" keys contain a vector of warnings encountered
 #' or the error that caused the projection process to stop. In the event of an error, the "data" key should contain partial results.
+#' @export
 convert_dp_to_dapps <- function(dp_fpath) {
   dp <- read_dp(dp_fpath)
   offsetcol <- which(names(dp) == "Data") - 1
