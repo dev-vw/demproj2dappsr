@@ -8,4 +8,4 @@ To install this package, simply run `devtools::install_github("dev-vw/demproj2da
 
 ## How to use
 
-The main wrapper function is `convert_dp_to_dappsr(...)`. Simply provide the file path to the Spectrum DemProj (`.dp`) file. Only works with `<General1>` DemProj files.
+The main wrapper function is `convert_dp_to_dappsr(...)`. Simply provide the file path to the Spectrum DemProj `.dp` file. Only works with `<General1>` DemProj files.
