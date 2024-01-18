@@ -1,8 +1,22 @@
-#' Read in .dp or .pjn files as data frames
+#' @description Determines if a tag exists within the DemProj data.
+#'
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
+#' @param tagcol The column number (or columns) of the DemProj data frame to search for the tag. Defaults to `c(1:2)`.
+#' @returns A logical.
+exists_label_or_tag <- function(dp, tag, tagcol = c(1:2)) {
+  any(dp[, tagcol] == tag)
+}
+
+#' @description Read in .dp or .pjn files as data frames
+#'
+#' @author Vania Wang
 #'
 #' @importFrom utils read.csv
-#' @param fpath A file path string to the `.dp` input file
-#' @returns a data frame
+#' @param fpath A file path string to the `.dp` input file.
+#' @returns A data frame.
 #' @export
 read_dp <- function(fpath) {
   df <- read.csv(fpath,
@@ -10,28 +24,33 @@ read_dp <- function(fpath) {
                  colClasses = "character",
                  na.strings = "")
   df <- as.data.frame(df)
+
   return(df)
 }
 
-#' Given a tag, finds the first index marking the start of the tagged data
+#' @description Given a tag, finds the first index marking the start of the tagged data.
 #'
-#' @param dp A DemProj data frame
-#' @param tag A tag string
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
 #' @param tagcol The column number of dp to search for the tag. Defaults to `1`.
-#' @returns an integer
+#' @returns An integer.
 dp_findstartindex <- function(dp, tag, tagcol = 1) {
   i_start <- which(dp[, tagcol] == tag)
 
   return(i_start)
 }
 
-#' #' Given a tag, finds the index marking the end of the tagged data
+#' @description Given a tag, finds the index marking the end of the tagged data.
 #'
-#' @param dp A DemProj data frame
-#' @param tag A tag string
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
 #' @param tagcol The column number of dp to search for the tag. Defaults to `2`.
 #' @param offset_idx An integer indicating an offset of the returned index.
-#' @returns an integer
+#' @returns An integer.
 dp_findendindex <- function(dp, tag, tagcol = 2, offset_idx = 0) {
   notna_indices <- which(!is.na(dp[, tagcol]))
   i_end <- notna_indices[which(notna_indices == which(dp[, tagcol] == tag)) + 1 + offset_idx] - 2
@@ -39,38 +58,43 @@ dp_findendindex <- function(dp, tag, tagcol = 2, offset_idx = 0) {
   return(i_end)
 }
 
-#' #' Given a tag, finds the index marking the position of the input tag
+#' @description Given a tag, finds the index marking the position of the input tag
+#' @author Vania Wang
 #'
-#' @param dp A DemProj data frame
-#' @param tag A tag string
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
 #' @param tagcol The column number of dp to search for the tag. Defaults to `2`.
-#' @returns an integer
+#' @returns An integer.
 dp_findindex <- function(dp, tag, tagcol = 2) {
   i <- which(dp[, tagcol] == tag)
 
   return(i)
 }
 
-#' Given keyword (kw) for a taglist (or similar column), finds is next
+#' @description Given keyword (kw) for a taglist (or similar column), finds is next
 #' index after the first instance for the input kw.
 #'
-#' @param vec A vector of kw
-#' @param kw A kw string
-#' @returns An integer
+#' @author Vania Wang
+#'
+#' @param vec A vector of keywords.
+#' @param kw A keyword string.
+#' @returns An integer.
 vec_findnextindex <- function(vec, kw) {
   i <- which(vec == kw)[1]
 
   return(i)
 }
 
-#' Takes a `dp` data frame and returns a subset data frame according to
+#' @description Takes a `dp` data frame and returns a subset data frame according to
 #' params.
 #'
-#' @param dp
-#' @param tag
-#' @param rows
-#' @param cols Defaults to `4`
-#' @param tagcol Defaults to `2`.
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
+#' @param rows An integer for the number of rows to extract.
+#' @param cols A numeric or vector to indicate number of columns to extract Defaults to `4`.
+#' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
 #' @param use_grep Defaults to `FALSE`.
 dp_ext <- function(dp, tag, rows, cols = 4, tagcol = 2, use_grep = FALSE) {
   if (use_grep) {
@@ -80,6 +104,15 @@ dp_ext <- function(dp, tag, rows, cols = 4, tagcol = 2, use_grep = FALSE) {
   }
 }
 
+
+#' @description Takes a subset of a DemProj data frame and returns a list of population vectors
+#' indexed by year and keyword.
+#'
+#' @author Vania Wang
+#'
+#' @param raw_df Subset of a DemProj data frame.
+#' @param n_proj_cols The number of projection years.
+#' @returns a hierarchical list
 convert_popdf_to_list <- function(raw_df, n_proj_cols) {
   kw_list <- c("^both", "^male", "^female")
   pop_list <- list()
@@ -105,8 +138,19 @@ convert_popdf_to_list <- function(raw_df, n_proj_cols) {
   return(pop_list)
 }
 
-# extracts population data from dp files
+#' @description Subsets population data from DemProj data frames, given a population tag.
+#'
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
+#' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
+#' @param disagg_var A vector containing strings that indicate disaggregation vars (most likely, gender)
+#' @param n_proj_cols The number of projection years.
+#' @param proj_years A vector containing the projection years.
+#' @returns A hierarchical list
 dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years) {
+
   # check if pop data has a separate urban section
   has_urban <- dp_ext(dp = dp, tag = "Use urban/rural projection", rows = 1)
 
@@ -132,10 +176,21 @@ dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years) 
 
   disagg_pop <- cbind(`start age` = as.numeric(gsub("age=", "", names(pop_list), ignore.case = TRUE)),
                       disagg_pop)
+
   return(disagg_pop)
 }
 
-# extracts ASFR data from dp files, 5 year age groups (8 groups)
+#' @description Subsets ASFR data from DemProj data frames, given a ASFR tag.
+#' Assumes 8 standardized 5-year age groups. See reference for age-group definitions.
+#'
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
+#' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
+#' @returns a data frame
+#'
+#' @seealso \href{https://data.unaids.org/topics/epidemiology/manuals/demproj_manual_v_4_en.pdf}{DemProj Version 4: A Computer Program for Making Population Projections}
 dp_extASFR <- function(dp, tag, tagcol = 2, proj_years) {
   i_start <- dp_findstartindex(dp, tag, tagcol = tagcol)
   i_end <- dp_findendindex(dp, tag, tagcol = tagcol)
@@ -159,8 +214,19 @@ dp_extASFR <- function(dp, tag, tagcol = 2, proj_years) {
   return(asfr_df)
 }
 
-# extracts ASFR data from dp files, 5 year age groups (8 groups)
-# age groups = "single" or "five"
+#' @description Extracts death data from DemProj data frames, given a death tag.
+#' Assumes 8 standardized 5-year age groups OR single age groups (0-80).
+#'
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
+#' @param age_group Either "single" or "five", to indicate single or five-year age groups.
+#' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
+#' @param offset_idx A vector of length two. First number is the offset for the start index while
+#' the second number if the offset for the end index. Defaults to `c(0, 0)`.
+#' @param proj_years A vector containing the projection years.
+#' @returns a data frame
 dp_extdeaths <- function(dp, tag, age_group, tagcol = 2, offset_idx = c(0, 0), proj_years) {
   i_start <- dp_findstartindex(dp, tag, tagcol = tagcol) + offset_idx[1]
   i_end <- dp_findendindex(dp, tag, tagcol = tagcol) + offset_idx[2]
@@ -190,6 +256,14 @@ dp_extdeaths <- function(dp, tag, age_group, tagcol = 2, offset_idx = c(0, 0), p
   return(deaths_df)
 }
 
+#' @description Takes a subset of a DemProj data frame and returns a list of migration vectors
+#' indexed by year and keyword.
+#'
+#' @author Vania Wang
+#'
+#' @param raw_df Subset of a DemProj data frame.
+#' @param n_proj_cols The number of projection years.
+#' @returns a hierarchical list
 convert_migdf_to_list <- function(raw_df, n_proj_cols) {
   mig_list <- list()
 
@@ -209,6 +283,19 @@ convert_migdf_to_list <- function(raw_df, n_proj_cols) {
   return(mig_list)
 }
 
+#' @description Extracts migration data from DemProj data frames, given a death tag.
+#' Assumes single age groups (0-17).
+#'
+#' @author Vania Wang
+#'
+#' @param dp A DemProj data frame.
+#' @param tag A tag string.
+#' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
+#' @param offset_idx A vector of length two. First number is the offset for the start index while
+#' the second number if the offset for the end index. Defaults to `c(4, 1)`.
+#' @param n_proj_cols The number of projection years.
+#' @param proj_years A vector containing the projection years.
+#' @returns a data frame
 dp_extmig <- function(dp, tag, tagcol = 2, offset_idx = c(4, 1), n_proj_cols, proj_years) {
   i_start <- dp_findstartindex(dp, tag, tagcol = 2) + offset_idx[1]
   i_end <- dp_findendindex(dp, tag, offset_idx = 2) + offset_idx[2]
