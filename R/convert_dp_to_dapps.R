@@ -382,7 +382,7 @@ convert_dp_to_dapps <- function(dp_fpath) {
   # ----- prepare the output
   output <- list(summary_measures = summary_tables,
                  detailed_tables_by_year = split_age_summary_tables,
-                 detailed_tables_by_age = age_table_lst,
+                 output_data = age_table_lst,
                  input_data = input_data,
                  warnings = warnings,
                  error = error)
