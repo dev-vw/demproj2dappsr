@@ -174,7 +174,7 @@ dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years) 
 
   names(disagg_pop) <- proj_years
 
-  disagg_pop <- cbind(`start age` = as.numeric(gsub("age=", "", names(pop_list), ignore.case = TRUE)),
+  disagg_pop <- cbind(`start age` = as.numeric(gsub("age=", "", names(pop_list), ignore.case = TRUE)) * 5 - 5,
                       disagg_pop)
 
   return(disagg_pop)
@@ -314,7 +314,7 @@ dp_extmig <- function(dp, tag, tagcol = 2, offset_idx = c(4, 1), n_proj_cols, pr
   names(mig_df) <- proj_years
   rownames(mig_df) <- 1:nrow(mig_df)
 
-  mig_df <- cbind(`start age` = as.numeric(gsub("age=", "", names(mig_lst), ignore.case = TRUE)),
+  mig_df <- cbind(`start age` = as.numeric(gsub("age=", "", names(mig_lst), ignore.case = TRUE)) * 5 - 5,
                   mig_df)
 
   return(mig_df)
