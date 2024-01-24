@@ -6,10 +6,12 @@
 #' @param tag A tag string.
 #' @param tagcol The column number (or columns) of the DemProj data frame to search for the tag. Defaults to `c(1:2)`.
 #' @returns A logical.
+#' @noRd
 exists_label_or_tag <- function(dp, tag, tagcol = c(1:2)) {
   any(dp[, tagcol] == tag)
 }
 
+#' @title read_dp
 #' @description Read in .dp or .pjn files as data frames
 #'
 #' @author Vania Wang
@@ -36,6 +38,7 @@ read_dp <- function(fpath) {
 #' @param tag A tag string.
 #' @param tagcol The column number of dp to search for the tag. Defaults to `1`.
 #' @returns An integer.
+#' @noRd
 dp_findstartindex <- function(dp, tag, tagcol = 1) {
   i_start <- which(dp[, tagcol] == tag)
 
@@ -51,6 +54,7 @@ dp_findstartindex <- function(dp, tag, tagcol = 1) {
 #' @param tagcol The column number of dp to search for the tag. Defaults to `2`.
 #' @param offset_idx An integer indicating an offset of the returned index.
 #' @returns An integer.
+#' @noRd
 dp_findendindex <- function(dp, tag, tagcol = 2, offset_idx = 0) {
   notna_indices <- which(!is.na(dp[, tagcol]))
   i_end <- notna_indices[which(notna_indices == which(dp[, tagcol] == tag)) + 1 + offset_idx] - 2
@@ -65,6 +69,7 @@ dp_findendindex <- function(dp, tag, tagcol = 2, offset_idx = 0) {
 #' @param tag A tag string.
 #' @param tagcol The column number of dp to search for the tag. Defaults to `2`.
 #' @returns An integer.
+#' @noRd
 dp_findindex <- function(dp, tag, tagcol = 2) {
   i <- which(dp[, tagcol] == tag)
 
@@ -79,6 +84,7 @@ dp_findindex <- function(dp, tag, tagcol = 2) {
 #' @param vec A vector of keywords.
 #' @param kw A keyword string.
 #' @returns An integer.
+#' @noRd
 vec_findnextindex <- function(vec, kw) {
   i <- which(vec == kw)[1]
 
@@ -96,6 +102,7 @@ vec_findnextindex <- function(vec, kw) {
 #' @param cols A numeric or vector to indicate number of columns to extract Defaults to `4`.
 #' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
 #' @param use_grep Defaults to `FALSE`.
+#' @noRd
 dp_ext <- function(dp, tag, rows, cols = 4, tagcol = 2, use_grep = FALSE) {
   if (use_grep) {
     dp[which(grepl(tag, dp[, tagcol], ignore.case = TRUE)) + rows, cols]
@@ -113,6 +120,7 @@ dp_ext <- function(dp, tag, rows, cols = 4, tagcol = 2, use_grep = FALSE) {
 #' @param raw_df Subset of a DemProj data frame.
 #' @param n_proj_cols The number of projection years.
 #' @returns a hierarchical list
+#' @noRd
 convert_popdf_to_list <- function(raw_df, n_proj_cols) {
   kw_list <- c("^both", "^male", "^female")
   pop_list <- list()
@@ -149,6 +157,7 @@ convert_popdf_to_list <- function(raw_df, n_proj_cols) {
 #' @param n_proj_cols The number of projection years.
 #' @param proj_years A vector containing the projection years.
 #' @returns A hierarchical list
+#' @noRd
 dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years) {
 
   # check if pop data has a separate urban section
@@ -189,6 +198,7 @@ dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years) 
 #' @param tag A tag string.
 #' @param tagcol A numeric or vector to indicate column or columns to query for tags. Defaults to `2`.
 #' @returns a data frame
+#' @noRd
 #'
 #' @seealso \href{https://data.unaids.org/topics/epidemiology/manuals/demproj_manual_v_4_en.pdf}{DemProj Version 4: A Computer Program for Making Population Projections}
 dp_extASFR <- function(dp, tag, tagcol = 2, proj_years) {
@@ -227,6 +237,7 @@ dp_extASFR <- function(dp, tag, tagcol = 2, proj_years) {
 #' the second number if the offset for the end index. Defaults to `c(0, 0)`.
 #' @param proj_years A vector containing the projection years.
 #' @returns a data frame
+#' @noRd
 dp_extdeaths <- function(dp, tag, age_group, tagcol = 2, offset_idx = c(0, 0), proj_years) {
   i_start <- dp_findstartindex(dp, tag, tagcol = tagcol) + offset_idx[1]
   i_end <- dp_findendindex(dp, tag, tagcol = tagcol) + offset_idx[2]
@@ -264,6 +275,7 @@ dp_extdeaths <- function(dp, tag, age_group, tagcol = 2, offset_idx = c(0, 0), p
 #' @param raw_df Subset of a DemProj data frame.
 #' @param n_proj_cols The number of projection years.
 #' @returns a hierarchical list
+#' @noRd
 convert_migdf_to_list <- function(raw_df, n_proj_cols) {
   mig_list <- list()
 
@@ -296,6 +308,7 @@ convert_migdf_to_list <- function(raw_df, n_proj_cols) {
 #' @param n_proj_cols The number of projection years.
 #' @param proj_years A vector containing the projection years.
 #' @returns a data frame
+#' @noRd
 dp_extmig <- function(dp, tag, tagcol = 2, offset_idx = c(4, 1), n_proj_cols, proj_years) {
   i_start <- dp_findstartindex(dp, tag, tagcol = 2) + offset_idx[1]
   i_end <- dp_findendindex(dp, tag, offset_idx = 2) + offset_idx[2]
