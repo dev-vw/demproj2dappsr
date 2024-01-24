@@ -260,10 +260,10 @@ convert_dp_to_dapps <- function(dp_fpath) {
   # ----- detailed tables by year
 
   # population
-  Population_Single_Year_Ages_by_Year_for_Male <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Male", n_proj_cols = n_proj_cols, proj_years = proj_years)
-  Population_Single_Year_Ages_by_Year_for_Female <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Female", n_proj_cols = n_proj_cols, proj_years = proj_years)
-  Population_Five_Year_Ages_by_Year_for_Male <- NA
-  Population_Five_Year_Ages_by_Year_for_Female <- NA
+  Population_Single_Year_Ages_by_Year_for_Male <- NA
+  Population_Single_Year_Ages_by_Year_for_Female <- NA
+  Population_Five_Year_Ages_by_Year_for_Male <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Male", n_proj_cols = n_proj_cols, proj_years = proj_years)
+  Population_Five_Year_Ages_by_Year_for_Female <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Female", n_proj_cols = n_proj_cols, proj_years = proj_years)
   Population_Special_Ages_by_Year_for_Male <- NA
   Population_Special_Ages_by_Year_for_Female <- NA
 
@@ -284,10 +284,10 @@ convert_dp_to_dapps <- function(dp_fpath) {
   nMx_Female_Abridged_by_Year <- NA
 
   # Migration
-  Migration_Totals_Single_Year_Ages_by_Year_for_Male <- dp_extmig(dp, "Male Migration", n_proj_cols = n_proj_cols, proj_years = proj_years)
-  Migration_Totals_Single_Year_Ages_by_Year_for_Female <- dp_extmig(dp, "Female Migration", n_proj_cols = n_proj_cols, proj_years = proj_years)
-  Migration_Totals_Five_Year_Ages_by_Year_for_Male <- NA
-  Migration_Totals_Five_Year_Ages_by_Year_for_Female <- NA
+  Migration_Totals_Single_Year_Ages_by_Year_for_Male <- NA
+  Migration_Totals_Single_Year_Ages_by_Year_for_Female <- NA
+  Migration_Totals_Five_Year_Ages_by_Year_for_Male <- dp_extmig(dp, "Male Migration", n_proj_cols = n_proj_cols, proj_years = proj_years)
+  Migration_Totals_Five_Year_Ages_by_Year_for_Female <- dp_extmig(dp, "Female Migration", n_proj_cols = n_proj_cols, proj_years = proj_years)
   Migration_Totals_Special_Ages_by_Year_for_Male <- NA
   Migration_Totals_Special_Ages_by_Year_for_Female <- NA
   Migration_stream_1_Single_Year_Ages_by_Year_for_Male <- NA
