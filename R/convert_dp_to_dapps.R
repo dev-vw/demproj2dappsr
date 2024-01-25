@@ -262,8 +262,8 @@ convert_dp_to_dapps <- function(dp_fpath) {
   # population
   Population_Single_Year_Ages_by_Year_for_Male <- NA
   Population_Single_Year_Ages_by_Year_for_Female <- NA
-  Population_Five_Year_Ages_by_Year_for_Male <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Male", n_proj_cols = n_proj_cols, proj_years = proj_years)
-  Population_Five_Year_Ages_by_Year_for_Female <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Female", n_proj_cols = n_proj_cols, proj_years = proj_years)
+  Population_Five_Year_Ages_by_Year_for_Male <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Male", n_proj_cols = n_proj_cols, proj_years = proj_years, offset_idx = 10)
+  Population_Five_Year_Ages_by_Year_for_Female <- dp_extpop(dp = dp, tag = '<TotPop2>', disagg_var = "Female", n_proj_cols = n_proj_cols, proj_years = proj_years, offset_idx = 10)
   Population_Special_Ages_by_Year_for_Male <- NA
   Population_Special_Ages_by_Year_for_Female <- NA
 
@@ -333,9 +333,9 @@ convert_dp_to_dapps <- function(dp_fpath) {
     year_label <- as.character(year)
 
     # Population
-    pop_m <- subset(Population_Single_Year_Ages_by_Year_for_Male,
+    pop_m <- subset(Population_Five_Year_Ages_by_Year_for_Male,
                     select = c("start age", year_label))
-    pop_f <- subset(Population_Single_Year_Ages_by_Year_for_Female,
+    pop_f <- subset(Population_Five_Year_Ages_by_Year_for_Female,
                     select = c("start age", year_label))
     pop_tot <- merge(pop_m, pop_f, by = "start age")
     names(pop_tot) <- c("start age", "male", "female")
@@ -356,9 +356,9 @@ convert_dp_to_dapps <- function(dp_fpath) {
     lt_f <- NA
 
     # Migration Totals
-    mig_m <- subset(Migration_Totals_Single_Year_Ages_by_Year_for_Male,
+    mig_m <- subset(Migration_Totals_Five_Year_Ages_by_Year_for_Male,
                     select = c("start age", year_label))
-    mig_f <- subset(Migration_Totals_Single_Year_Ages_by_Year_for_Female,
+    mig_f <- subset(Migration_Totals_Five_Year_Ages_by_Year_for_Female,
                     select = c("start age", year_label))
     mig_tot <- merge(mig_m, mig_f, by = "start age")
     names(mig_tot) <- c("start age", "male", "female")

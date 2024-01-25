@@ -156,36 +156,39 @@ convert_popdf_to_list <- function(raw_df, n_proj_cols) {
 #' @param disagg_var A vector containing strings that indicate disaggregation vars (most likely, gender)
 #' @param n_proj_cols The number of projection years.
 #' @param proj_years A vector containing the projection years.
+#' @param offset_idx Integer indicating the offset for indexing main dp data frame. 
+#' Defaults to `0`.
 #' @returns A hierarchical list
 #' @noRd
-dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years) {
-
+# extracts population data from dp files
+dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years, offset_idx = 0) {
   # check if pop data has a separate urban section
   has_urban <- dp_ext(dp = dp, tag = "Use urban/rural projection", rows = 1)
-
-  i_start <- dp_findstartindex(dp, tag)
-
+  
+  i_start <- dp_findstartindex(dp, tag) + offset_idx
+  
   if (has_urban == "1") {
     i_end <- dp_findindex(dp, "Urban", tagcol = 3) - 1
   } else {
     i_end <- dp_findendindex(dp, tag, tagcol = tagcol)
   }
-
+  
   raw_df <- dp[i_start:i_end, -(1:tagcol)] # subset from dp, the sub df
   raw_df <- raw_df[rowSums(is.na(raw_df)) != ncol(raw_df), ] # remove rows with all NAs across
   rownames(raw_df) <- 1:nrow(raw_df) # row indices retain the order prior to subset. need to reassign indices.
-
+  
   pop_list <- convert_popdf_to_list(raw_df, n_proj_cols)
-
-  disagg_pop <- data.frame(do.call(rbind,
-                                   lapply(names(pop_list),
+  
+  disagg_pop <- data.frame(do.call(rbind, 
+                                   lapply(names(pop_list), 
                                           function(age_label) pop_list[[age_label]][[disagg_var]])))
-
+  
   names(disagg_pop) <- proj_years
-
+  
+  # five-year age groups, hard-coded for now
   disagg_pop <- cbind(`start age` = as.numeric(gsub("age=", "", names(pop_list), ignore.case = TRUE)) * 5 - 5,
                       disagg_pop)
-
+  
   return(disagg_pop)
 }
 
@@ -309,26 +312,26 @@ convert_migdf_to_list <- function(raw_df, n_proj_cols) {
 #' @param proj_years A vector containing the projection years.
 #' @returns a data frame
 #' @noRd
-dp_extmig <- function(dp, tag, tagcol = 2, offset_idx = c(4, 1), n_proj_cols, proj_years) {
-  i_start <- dp_findstartindex(dp, tag, tagcol = 2) + offset_idx[1]
+dp_extmig <- function(dp, tag, tagcol = 2, offset_idx = c(6, 1), n_proj_cols, proj_years) {
+  i_start <- dp_findstartindex(dp, tag, tagcol = 2) + offset_idx[1] 
   i_end <- dp_findendindex(dp, tag, offset_idx = 2) + offset_idx[2]
-
+  
   raw_df <- dp[i_start:i_end, -(1:tagcol)] # subset from dp, the sub df
-
+  
   # clean up any columns or rows that are all NAs
   raw_df <- raw_df[, colSums(is.na(raw_df)) != nrow(raw_df)] # remove NA cols
   raw_df <- raw_df[rowSums(is.na(raw_df)) != ncol(raw_df), ] # remove NA rows
   rownames(raw_df) <- 1:nrow(raw_df) # row indices retain the order prior to subset. need to reassign indices.
-
+  
   mig_lst <- convert_migdf_to_list(raw_df, n_proj_cols)
-
+  
   mig_df <- data.frame(do.call(rbind, mig_lst))
-
+  
   names(mig_df) <- proj_years
   rownames(mig_df) <- 1:nrow(mig_df)
-
+  
   mig_df <- cbind(`start age` = as.numeric(gsub("age=", "", names(mig_lst), ignore.case = TRUE)) * 5 - 5,
                   mig_df)
-
+  
   return(mig_df)
 }
