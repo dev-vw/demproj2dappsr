@@ -307,6 +307,8 @@ convert_dp_to_dapps <- function(dp_fpath) {
                                    ASFR_Five_Year_Ages_by_Year = ASFR_Five_Year_Ages_by_Year,
                                    Deaths_Single_Year_Ages_by_Year_for_Male = Deaths_Single_Year_Ages_by_Year_for_Male,
                                    Deaths_Single_Year_Ages_by_Year_for_Female = Deaths_Single_Year_Ages_by_Year_for_Female,
+                                   Deaths_Five_Year_Ages_by_Year_for_Male = Deaths_Five_Year_Ages_by_Year_for_Male,
+                                   Deaths_Five_Year_Ages_by_Year_for_Female = Deaths_Five_Year_Ages_by_Year_for_Female,
                                    Deaths_Special_Ages_by_Year_for_Male = Deaths_Special_Ages_by_Year_for_Male,
                                    Deaths_Special_Ages_by_Year_for_Female = Deaths_Special_Ages_by_Year_for_Female,
                                    nMx_Male_Single_Year_Ages_by_Year = nMx_Male_Single_Year_Ages_by_Year,
