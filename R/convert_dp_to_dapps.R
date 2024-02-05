@@ -91,7 +91,7 @@ convert_dp_to_dapps <- function(dp_fpath) {
     asfr_4044 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 7, cols = (1:n_proj_cols) + offsetcol)),
     asfr_4549 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 8, cols = (1:n_proj_cols) + offsetcol)),
     tfr = as.numeric(dp_ext(dp, tag = "TFR", rows = 1, cols = (1:n_proj_cols) + offsetcol)),
-    sxrb = NA
+    sxrb = as.numeric(dp_ext(dp, tag = "Birth Ratio", rows = 1, cols = (1:n_proj_cols) + offsetcol))
   )
 
   names(Fertility_Summary) <- c("Year",
@@ -199,7 +199,7 @@ convert_dp_to_dapps <- function(dp_fpath) {
   # List 1.11: SXRB
   SXRB <- data.frame(
     year = proj_years,
-    sxrb = NA
+    sxrb = as.numeric(dp_ext(dp, tag = "Birth Ratio", rows = 1, cols = (1:n_proj_cols) + offsetcol))
   )
 
   names(SXRB) = c("Year", "SXRB")
