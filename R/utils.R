@@ -192,7 +192,7 @@ dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years, 
   return(disagg_pop)
 }
 
-#' @description Subsets ASFR data from DemProj data frames, given a ASFR tag.
+#' @description Subsets ASFD data from DemProj data frames, given a ASFD tag.
 #' Assumes 8 standardized 5-year age groups. See reference for age-group definitions.
 #'
 #' @author Vania Wang
@@ -204,7 +204,7 @@ dp_extpop <- function(dp, tag, tagcol = 2, disagg_var, n_proj_cols, proj_years, 
 #' @noRd
 #'
 #' @seealso \href{https://data.unaids.org/topics/epidemiology/manuals/demproj_manual_v_4_en.pdf}{DemProj Version 4: A Computer Program for Making Population Projections}
-dp_extASFR <- function(dp, tag, tagcol = 2, proj_years) {
+dp_extASFD <- function(dp, tag, tagcol = 2, proj_years) {
   i_start <- dp_findstartindex(dp, tag, tagcol = tagcol)
   i_end <- dp_findendindex(dp, tag, tagcol = tagcol)
 
@@ -217,14 +217,14 @@ dp_extASFR <- function(dp, tag, tagcol = 2, proj_years) {
   raw_df <- data.frame(sapply(raw_df, as.numeric))
 
   if (ncol(raw_df) != length(proj_years)) {
-    stop("Error: Extracted ASFR dataframe has wrong dimensions!")
+    stop("Error: Extracted ASFD dataframe has wrong dimensions!")
   } else {
     names(raw_df) <- proj_years
-    asfr_df <- cbind(`start age` = seq(10, 45, by = 5),
+    asfd_df <- cbind(`start age` = seq(10, 45, by = 5),
                      raw_df)
   }
 
-  return(asfr_df)
+  return(asfd_df)
 }
 
 #' @description Extracts death data from DemProj data frames, given a death tag.
@@ -260,7 +260,7 @@ dp_extdeaths <- function(dp, tag, age_group, tagcol = 2, offset_idx = c(0, 0), p
   }
 
   if (ncol(raw_df) != length(proj_years) | nrow(raw_df) != length(`start age`)) {
-    stop("Error: Extracted ASFR dataframe has wrong dimensions!")
+    stop("Error: Extracted ASFD dataframe has wrong dimensions!")
   } else {
     names(raw_df) <- proj_years
     deaths_df <- cbind(`start age`,

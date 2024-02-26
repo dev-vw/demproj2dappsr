@@ -82,27 +82,27 @@ convert_dp_to_dapps <- function(dp_fpath) {
   # List 1.4: Fertility Summary
   Fertility_Summary <- data.frame(
     year = proj_years,
-    asfr_1014 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 1, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_1519 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 2, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_2024 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 3, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_2529 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 4, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_3034 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 5, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_3539 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 6, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_4044 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 7, cols = (1:n_proj_cols) + offsetcol)),
-    asfr_4549 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 8, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_1014 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 1, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_1519 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 2, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_2024 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 3, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_2529 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 4, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_3034 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 5, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_3539 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 6, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_4044 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 7, cols = (1:n_proj_cols) + offsetcol)),
+    asfd_4549 = as.numeric(dp_ext(dp, tag = "Age Specific Fertility Distribution", rows = 8, cols = (1:n_proj_cols) + offsetcol)),
     tfr = as.numeric(dp_ext(dp, tag = "TFR", rows = 1, cols = (1:n_proj_cols) + offsetcol)),
     sxrb = as.numeric(dp_ext(dp, tag = "Birth Ratio", rows = 1, cols = (1:n_proj_cols) + offsetcol))
   )
 
   names(Fertility_Summary) <- c("Year",
-                                "ASFR 10-14",
-                                "ASFR 15-19",
-                                "ASFR 20-14",
-                                "ASFR 25-29",
-                                "ASFR 30-34",
-                                "ASFR 35-39",
-                                "ASFR 40-44",
-                                "ASFR 45-49",
+                                "ASFD 10-14",
+                                "ASFD 15-19",
+                                "ASFD 20-14",
+                                "ASFD 25-29",
+                                "ASFD 30-34",
+                                "ASFD 35-39",
+                                "ASFD 40-44",
+                                "ASFD 45-49",
                                 "TFR",
                                 "SXRB")
 
@@ -267,9 +267,9 @@ convert_dp_to_dapps <- function(dp_fpath) {
   Population_Special_Ages_by_Year_for_Male <- NA
   Population_Special_Ages_by_Year_for_Female <- NA
 
-  # ASFR
-  ASFR_Single_Year_Ages_by_Year <- NA
-  ASFR_Five_Year_Ages_by_Year <- dp_extASFR(dp, "Age Specific Fertility Distribution", tagcol = 2, proj_years = proj_years)
+  # ASFD
+  ASFD_Single_Year_Ages_by_Year <- NA
+  ASFD_Five_Year_Ages_by_Year <- dp_extASFD(dp, "Age Specific Fertility Distribution", tagcol = 2, proj_years = proj_years)
 
   # Deaths
   Deaths_Single_Year_Ages_by_Year_for_Male <- dp_extdeaths(dp, "Single Age Deaths Male", age_group = "single", offset_idx = c(1, 1), proj_years = proj_years)
@@ -303,8 +303,8 @@ convert_dp_to_dapps <- function(dp_fpath) {
                                    Population_Five_Year_Ages_by_Year_for_Female = Population_Five_Year_Ages_by_Year_for_Female,
                                    Population_Special_Ages_by_Year_for_Male = Population_Special_Ages_by_Year_for_Male,
                                    Population_Special_Ages_by_Year_for_Male = Population_Special_Ages_by_Year_for_Male,
-                                   ASFR_Single_Year_Ages_by_Year = ASFR_Single_Year_Ages_by_Year,
-                                   ASFR_Five_Year_Ages_by_Year = ASFR_Five_Year_Ages_by_Year,
+                                   ASFD_Single_Year_Ages_by_Year = ASFD_Single_Year_Ages_by_Year,
+                                   ASFD_Five_Year_Ages_by_Year = ASFD_Five_Year_Ages_by_Year,
                                    Deaths_Single_Year_Ages_by_Year_for_Male = Deaths_Single_Year_Ages_by_Year_for_Male,
                                    Deaths_Single_Year_Ages_by_Year_for_Female = Deaths_Single_Year_Ages_by_Year_for_Female,
                                    Deaths_Five_Year_Ages_by_Year_for_Male = Deaths_Five_Year_Ages_by_Year_for_Male,
